@@ -1,0 +1,531 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module pwdsvc.data</title>
+<meta charset="utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="pwdsvc.html"><font color="#ffffff">pwdsvc</font></a>.data</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/amos/Documents/JobSearch/workspace/python/django/PasswordService.20180814_191104/pwdsvc/data.py">/home/amos/Documents/JobSearch/workspace/python/django/PasswordService.20180814_191104/pwdsvc/data.py</a></font></td></tr></table>
+    <p><tt>This&nbsp;module&nbsp;provides&nbsp;classes&nbsp;to&nbsp;load&nbsp;the&nbsp;passwd&nbsp;and&nbsp;group&nbsp;files,<br>
+search&nbsp;the&nbsp;contents&nbsp;of&nbsp;loaded&nbsp;content,&nbsp;monitor&nbsp;and&nbsp;reload&nbsp;files&nbsp;on<br>
+file&nbsp;change&nbsp;while&nbsp;running.</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="json.html">json</a><br>
+</td><td width="25%" valign=top><a href="logging.html">logging</a><br>
+</td><td width="25%" valign=top><a href="os.html">os</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="__builtin__.html#object">__builtin__.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="pwdsvc.data.html#BaseDataType">BaseDataType</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="pwdsvc.data.html#GroupData">GroupData</a>
+</font></dt><dt><font face="helvetica, arial"><a href="pwdsvc.data.html#PasswordData">PasswordData</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="pwdsvc.data.html#DataManager">DataManager</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="exceptions.html#RuntimeError">exceptions.RuntimeError</a>(<a href="exceptions.html#StandardError">exceptions.StandardError</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="pwdsvc.data.html#PathError">PathError</a>
+</font></dt><dt><font face="helvetica, arial"><a href="pwdsvc.data.html#QueryError">QueryError</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="watchdog.events.html#PatternMatchingEventHandler">watchdog.events.PatternMatchingEventHandler</a>(<a href="watchdog.events.html#FileSystemEventHandler">watchdog.events.FileSystemEventHandler</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="pwdsvc.data.html#DataFileEventHandler">DataFileEventHandler</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="BaseDataType">class <strong>BaseDataType</strong></a>(<a href="__builtin__.html#object">__builtin__.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>This&nbsp;class&nbsp;implements&nbsp;the&nbsp;common&nbsp;structure&nbsp;and&nbsp;functionality<br>
+related&nbsp;to&nbsp;data&nbsp;loaded&nbsp;from&nbsp;either&nbsp;passwd&nbsp;or&nbsp;group&nbsp;files.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="BaseDataType-__init__"><strong>__init__</strong></a>(self, field_names)</dt></dl>
+
+<dl><dt><a name="BaseDataType-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><tt>Purpose:&nbsp;Return&nbsp;json&nbsp;representation&nbsp;of&nbsp;fields&nbsp;as&nbsp;string.<br>
+Input&nbsp;Parameters:&nbsp;N/A<br>
+Return:&nbsp;json&nbsp;encoded&nbsp;value&nbsp;of&nbsp;_fields&nbsp;as&nbsp;a&nbsp;string.<br>
+Exceptions:&nbsp;N/A</tt></dd></dl>
+
+<dl><dt><a name="BaseDataType-compare_fields"><strong>compare_fields</strong></a>(self, fields)</dt><dd><tt>Purpose:&nbsp;Compare&nbsp;the&nbsp;_fields&nbsp;in&nbsp;this&nbsp;instance&nbsp;to&nbsp;fields&nbsp;passed&nbsp;in.<br>
+Input&nbsp;Parameters:&nbsp;fields,&nbsp;dictionary&nbsp;of&nbsp;values&nbsp;to&nbsp;compare&nbsp;against.<br>
+Return:&nbsp;True&nbsp;if&nbsp;all&nbsp;fields&nbsp;match.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;True&nbsp;if&nbsp;field&nbsp;name&nbsp;is&nbsp;members&nbsp;and&nbsp;all&nbsp;fields<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;input&nbsp;parameter&nbsp;are&nbsp;subset&nbsp;of&nbsp;_fields[members].<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other&nbsp;wise&nbsp;False.<br>
+Exceptions:&nbsp;<a href="#QueryError">QueryError</a>&nbsp;if&nbsp;unsupported&nbsp;fields&nbsp;are&nbsp;specified.</tt></dd></dl>
+
+<dl><dt><a name="BaseDataType-get_field"><strong>get_field</strong></a>(self, key)</dt><dd><tt>Purpose:&nbsp;Search&nbsp;for&nbsp;field&nbsp;by&nbsp;key&nbsp;and&nbsp;return&nbsp;string&nbsp;value.<br>
+Input&nbsp;Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;key&nbsp;-&nbsp;name&nbsp;of&nbsp;field&nbsp;to&nbsp;search.<br>
+Return:&nbsp;Falue&nbsp;of&nbsp;specified&nbsp;field,&nbsp;None&nbsp;if&nbsp;not&nbsp;found.<br>
+Exceptions:&nbsp;N/A</tt></dd></dl>
+
+<dl><dt><a name="BaseDataType-prepare_search"><strong>prepare_search</strong></a>(self, dict_)</dt><dd><tt>Purpose:&nbsp;Loads&nbsp;dictionaries&nbsp;to&nbsp;support&nbsp;lookup&nbsp;of&nbsp;specified&nbsp;values.<br>
+Input&nbsp;Parameters:&nbsp;dict_,&nbsp;dictionary&nbsp;of&nbsp;values&nbsp;to&nbsp;iterate&nbsp;and&nbsp;load.<br>
+Return:&nbsp;N/A.<br>
+Exceptions:&nbsp;N/A.</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="DataFileEventHandler">class <strong>DataFileEventHandler</strong></a>(<a href="watchdog.events.html#PatternMatchingEventHandler">watchdog.events.PatternMatchingEventHandler</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>This&nbsp;class&nbsp;handles&nbsp;file&nbsp;change&nbsp;events&nbsp;on&nbsp;passwd&nbsp;or&nbsp;group&nbsp;files.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="pwdsvc.data.html#DataFileEventHandler">DataFileEventHandler</a></dd>
+<dd><a href="watchdog.events.html#PatternMatchingEventHandler">watchdog.events.PatternMatchingEventHandler</a></dd>
+<dd><a href="watchdog.events.html#FileSystemEventHandler">watchdog.events.FileSystemEventHandler</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="DataFileEventHandler-__init__"><strong>__init__</strong></a>(self, patterns)</dt></dl>
+
+<dl><dt><a name="DataFileEventHandler-init_callback"><strong>init_callback</strong></a>(self, data_mgr, file_path, data_type)</dt><dd><tt>Purpose:&nbsp;Initializes&nbsp;callback&nbsp;so&nbsp;that&nbsp;this&nbsp;class&nbsp;can<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reload&nbsp;the&nbsp;data&nbsp;in&nbsp;<a href="#DataManager">DataManager</a>.<br>
+Input&nbsp;Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;data_mgr&nbsp;-&nbsp;instance&nbsp;of&nbsp;data_mgr.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;file_path&nbsp;-&nbsp;path&nbsp;to&nbsp;file&nbsp;to&nbsp;watch.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;data_type&nbsp;-&nbsp;type&nbsp;of&nbsp;data&nbsp;being&nbsp;watched&nbsp;(Password&nbsp;or&nbsp;Group).<br>
+Return:&nbsp;N/A.<br>
+Exceptions:&nbsp;N/A.</tt></dd></dl>
+
+<dl><dt><a name="DataFileEventHandler-on_modified"><strong>on_modified</strong></a>(self, event)</dt><dd><tt>Purpose:&nbsp;Receives&nbsp;notification&nbsp;of&nbsp;file&nbsp;change&nbsp;and&nbsp;calls<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;on&nbsp;<a href="#DataManager">DataManager</a>&nbsp;instance&nbsp;to&nbsp;reload.<br>
+Input&nbsp;Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;event&nbsp;-&nbsp;type&nbsp;of&nbsp;filesystem&nbsp;event.<br>
+Return:&nbsp;N/A.<br>
+Exceptions:&nbsp;N/A.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="watchdog.events.html#PatternMatchingEventHandler">watchdog.events.PatternMatchingEventHandler</a>:<br>
+<dl><dt><a name="DataFileEventHandler-dispatch"><strong>dispatch</strong></a>(self, event)</dt><dd><tt>Dispatches&nbsp;events&nbsp;to&nbsp;the&nbsp;appropriate&nbsp;methods.<br>
+&nbsp;<br>
+:param&nbsp;event:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;event&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;representing&nbsp;the&nbsp;file&nbsp;system&nbsp;event.<br>
+:type&nbsp;event:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;:class:`FileSystemEvent`</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="watchdog.events.html#PatternMatchingEventHandler">watchdog.events.PatternMatchingEventHandler</a>:<br>
+<dl><dt><strong>case_sensitive</strong></dt>
+<dd><tt>(Read-only)<br>
+``True``&nbsp;if&nbsp;path&nbsp;names&nbsp;should&nbsp;be&nbsp;matched&nbsp;sensitive&nbsp;to&nbsp;case;&nbsp;``False``<br>
+otherwise.</tt></dd>
+</dl>
+<dl><dt><strong>ignore_directories</strong></dt>
+<dd><tt>(Read-only)<br>
+``True``&nbsp;if&nbsp;directories&nbsp;should&nbsp;be&nbsp;ignored;&nbsp;``False``&nbsp;otherwise.</tt></dd>
+</dl>
+<dl><dt><strong>ignore_patterns</strong></dt>
+<dd><tt>(Read-only)<br>
+Patterns&nbsp;to&nbsp;ignore&nbsp;matching&nbsp;event&nbsp;paths.</tt></dd>
+</dl>
+<dl><dt><strong>patterns</strong></dt>
+<dd><tt>(Read-only)<br>
+Patterns&nbsp;to&nbsp;allow&nbsp;matching&nbsp;event&nbsp;paths.</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="watchdog.events.html#FileSystemEventHandler">watchdog.events.FileSystemEventHandler</a>:<br>
+<dl><dt><a name="DataFileEventHandler-on_any_event"><strong>on_any_event</strong></a>(self, event)</dt><dd><tt>Catch-all&nbsp;event&nbsp;handler.<br>
+&nbsp;<br>
+:param&nbsp;event:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;event&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;representing&nbsp;the&nbsp;file&nbsp;system&nbsp;event.<br>
+:type&nbsp;event:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;:class:`FileSystemEvent`</tt></dd></dl>
+
+<dl><dt><a name="DataFileEventHandler-on_created"><strong>on_created</strong></a>(self, event)</dt><dd><tt>Called&nbsp;when&nbsp;a&nbsp;file&nbsp;or&nbsp;directory&nbsp;is&nbsp;created.<br>
+&nbsp;<br>
+:param&nbsp;event:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Event&nbsp;representing&nbsp;file/directory&nbsp;creation.<br>
+:type&nbsp;event:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;:class:`DirCreatedEvent`&nbsp;or&nbsp;:class:`FileCreatedEvent`</tt></dd></dl>
+
+<dl><dt><a name="DataFileEventHandler-on_deleted"><strong>on_deleted</strong></a>(self, event)</dt><dd><tt>Called&nbsp;when&nbsp;a&nbsp;file&nbsp;or&nbsp;directory&nbsp;is&nbsp;deleted.<br>
+&nbsp;<br>
+:param&nbsp;event:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Event&nbsp;representing&nbsp;file/directory&nbsp;deletion.<br>
+:type&nbsp;event:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;:class:`DirDeletedEvent`&nbsp;or&nbsp;:class:`FileDeletedEvent`</tt></dd></dl>
+
+<dl><dt><a name="DataFileEventHandler-on_moved"><strong>on_moved</strong></a>(self, event)</dt><dd><tt>Called&nbsp;when&nbsp;a&nbsp;file&nbsp;or&nbsp;a&nbsp;directory&nbsp;is&nbsp;moved&nbsp;or&nbsp;renamed.<br>
+&nbsp;<br>
+:param&nbsp;event:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Event&nbsp;representing&nbsp;file/directory&nbsp;movement.<br>
+:type&nbsp;event:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;:class:`DirMovedEvent`&nbsp;or&nbsp;:class:`FileMovedEvent`</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="watchdog.events.html#FileSystemEventHandler">watchdog.events.FileSystemEventHandler</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="DataManager">class <strong>DataManager</strong></a>(<a href="__builtin__.html#object">__builtin__.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>This&nbsp;class&nbsp;handles&nbsp;loading&nbsp;of&nbsp;passwd&nbsp;and&nbsp;group&nbsp;files&nbsp;and<br>
+provides&nbsp;methods&nbsp;for&nbsp;searching&nbsp;the&nbsp;data&nbsp;loaded.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="DataManager-__init__"><strong>__init__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="DataManager-init_data_type"><strong>init_data_type</strong></a>(self, data_type_name)</dt><dd><tt>Purpose:&nbsp;Initialize&nbsp;dictionaries&nbsp;indexed&nbsp;by&nbsp;datatype&nbsp;to&nbsp;support&nbsp;search.<br>
+Input&nbsp;Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;data_type_name&nbsp;-&nbsp;name&nbsp;of&nbsp;data&nbsp;type&nbsp;to&nbsp;use&nbsp;as&nbsp;index.<br>
+Return:&nbsp;N/A.<br>
+Exceptions:&nbsp;N/A.</tt></dd></dl>
+
+<dl><dt><a name="DataManager-load_data"><strong>load_data</strong></a>(self)</dt><dd><tt>Purpose:&nbsp;Load&nbsp;all&nbsp;types&nbsp;of&nbsp;data&nbsp;and&nbsp;start&nbsp;monitoring&nbsp;files.<br>
+Input&nbsp;Parameters:&nbsp;N/A<br>
+Return:&nbsp;N/A<br>
+Exceptions:&nbsp;N/A.</tt></dd></dl>
+
+<dl><dt><a name="DataManager-load_data_by_type"><strong>load_data_by_type</strong></a>(self, data_type)</dt><dd><tt>Purpose:&nbsp;Given&nbsp;data&nbsp;type&nbsp;name;&nbsp;start&nbsp;a&nbsp;watchdog&nbsp;observer<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;monitor&nbsp;for&nbsp;file&nbsp;changes&nbsp;at&nbsp;configured&nbsp;path.<br>
+Input&nbsp;Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;data_type_name&nbsp;-&nbsp;data&nbsp;type&nbsp;to&nbsp;use&nbsp;as&nbsp;index.<br>
+Return:&nbsp;N/A<br>
+Exceptions:&nbsp;N/A.</tt></dd></dl>
+
+<dl><dt><a name="DataManager-reload_datatype"><strong>reload_datatype</strong></a>(self, data_type)</dt><dd><tt>Purpose:&nbsp;Given&nbsp;data&nbsp;type&nbsp;name;&nbsp;reload&nbsp;source&nbsp;path.<br>
+Input&nbsp;Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;data_type&nbsp;-&nbsp;data&nbsp;type&nbsp;to&nbsp;use&nbsp;as&nbsp;index.<br>
+Return:&nbsp;N/A<br>
+Exceptions:&nbsp;N/A.</tt></dd></dl>
+
+<dl><dt><a name="DataManager-search"><strong>search</strong></a>(self, data_type_name, search_key<font color="#909090">=None</font>, search_value<font color="#909090">=None</font>)</dt><dd><tt>Purpose:&nbsp;Given&nbsp;data&nbsp;type&nbsp;name,&nbsp;key,&nbsp;and&nbsp;value;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;find&nbsp;a&nbsp;list&nbsp;of&nbsp;matching&nbsp;<a href="#BaseDataType">BaseDataType</a>&nbsp;instances.<br>
+Input&nbsp;Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;data_type_name&nbsp;-&nbsp;name&nbsp;of&nbsp;data&nbsp;type&nbsp;to&nbsp;use&nbsp;as&nbsp;index.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;search_key&nbsp;-&nbsp;field&nbsp;name&nbsp;to&nbsp;use&nbsp;as&nbsp;search&nbsp;criteria.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;search_value&nbsp;-&nbsp;value&nbsp;to&nbsp;use&nbsp;as&nbsp;search&nbsp;criteria&nbsp;for&nbsp;specified&nbsp;key.<br>
+Return:&nbsp;list&nbsp;of&nbsp;<a href="#BaseDataType">BaseDataType</a>&nbsp;(or&nbsp;subclassed)&nbsp;instances.<br>
+Exceptions:&nbsp;N/A.</tt></dd></dl>
+
+<dl><dt><a name="DataManager-search_with_params"><strong>search_with_params</strong></a>(self, data_type_name, dict_)</dt><dd><tt>Purpose:&nbsp;Given&nbsp;data&nbsp;type&nbsp;name&nbsp;and&nbsp;dictionary&nbsp;of&nbsp;params<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;find&nbsp;a&nbsp;list&nbsp;of&nbsp;matching&nbsp;<a href="#BaseDataType">BaseDataType</a>&nbsp;instances.<br>
+Input&nbsp;Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;data_type_name&nbsp;-&nbsp;name&nbsp;of&nbsp;data&nbsp;type&nbsp;to&nbsp;use&nbsp;as&nbsp;index.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dict_&nbsp;-&nbsp;OrderedDict&nbsp;containing&nbsp;parameters&nbsp;to&nbsp;use&nbsp;as<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;search&nbsp;criteria.<br>
+Return:&nbsp;list&nbsp;of&nbsp;<a href="#BaseDataType">BaseDataType</a>&nbsp;(or&nbsp;subclassed)&nbsp;instances.<br>
+Exceptions:&nbsp;N/A.</tt></dd></dl>
+
+<dl><dt><a name="DataManager-start_watchdog"><strong>start_watchdog</strong></a>(self, data_type)</dt><dd><tt>Purpose:&nbsp;Given&nbsp;data&nbsp;type&nbsp;name;&nbsp;start&nbsp;a&nbsp;watchdog&nbsp;observer<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;monitor&nbsp;for&nbsp;file&nbsp;changes&nbsp;at&nbsp;configured&nbsp;path.<br>
+Input&nbsp;Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;data_type_name&nbsp;-&nbsp;data&nbsp;type&nbsp;to&nbsp;use&nbsp;as&nbsp;index.<br>
+Return:&nbsp;N/A<br>
+Exceptions:&nbsp;N/A.</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="GroupData">class <strong>GroupData</strong></a>(<a href="pwdsvc.data.html#BaseDataType">BaseDataType</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>This&nbsp;class&nbsp;implements&nbsp;the&nbsp;structure&nbsp;and&nbsp;functionality<br>
+related&nbsp;to&nbsp;data&nbsp;loaded&nbsp;from&nbsp;group&nbsp;file.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="pwdsvc.data.html#GroupData">GroupData</a></dd>
+<dd><a href="pwdsvc.data.html#BaseDataType">BaseDataType</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="GroupData-__init__"><strong>__init__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="GroupData-load_from_list"><strong>load_from_list</strong></a>(self, list_)</dt><dd><tt>Purpose:&nbsp;Load&nbsp;fields&nbsp;from&nbsp;list&nbsp;of&nbsp;values&nbsp;passed&nbsp;in.<br>
+Input&nbsp;Parameters:&nbsp;list_,&nbsp;list&nbsp;of&nbsp;values&nbsp;in&nbsp;order&nbsp;saved&nbsp;in&nbsp;group&nbsp;file.<br>
+Return:&nbsp;N/A.<br>
+Exceptions:&nbsp;N/A.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="pwdsvc.data.html#BaseDataType">BaseDataType</a>:<br>
+<dl><dt><a name="GroupData-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><tt>Purpose:&nbsp;Return&nbsp;json&nbsp;representation&nbsp;of&nbsp;fields&nbsp;as&nbsp;string.<br>
+Input&nbsp;Parameters:&nbsp;N/A<br>
+Return:&nbsp;json&nbsp;encoded&nbsp;value&nbsp;of&nbsp;_fields&nbsp;as&nbsp;a&nbsp;string.<br>
+Exceptions:&nbsp;N/A</tt></dd></dl>
+
+<dl><dt><a name="GroupData-compare_fields"><strong>compare_fields</strong></a>(self, fields)</dt><dd><tt>Purpose:&nbsp;Compare&nbsp;the&nbsp;_fields&nbsp;in&nbsp;this&nbsp;instance&nbsp;to&nbsp;fields&nbsp;passed&nbsp;in.<br>
+Input&nbsp;Parameters:&nbsp;fields,&nbsp;dictionary&nbsp;of&nbsp;values&nbsp;to&nbsp;compare&nbsp;against.<br>
+Return:&nbsp;True&nbsp;if&nbsp;all&nbsp;fields&nbsp;match.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;True&nbsp;if&nbsp;field&nbsp;name&nbsp;is&nbsp;members&nbsp;and&nbsp;all&nbsp;fields<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;input&nbsp;parameter&nbsp;are&nbsp;subset&nbsp;of&nbsp;_fields[members].<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other&nbsp;wise&nbsp;False.<br>
+Exceptions:&nbsp;<a href="#QueryError">QueryError</a>&nbsp;if&nbsp;unsupported&nbsp;fields&nbsp;are&nbsp;specified.</tt></dd></dl>
+
+<dl><dt><a name="GroupData-get_field"><strong>get_field</strong></a>(self, key)</dt><dd><tt>Purpose:&nbsp;Search&nbsp;for&nbsp;field&nbsp;by&nbsp;key&nbsp;and&nbsp;return&nbsp;string&nbsp;value.<br>
+Input&nbsp;Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;key&nbsp;-&nbsp;name&nbsp;of&nbsp;field&nbsp;to&nbsp;search.<br>
+Return:&nbsp;Falue&nbsp;of&nbsp;specified&nbsp;field,&nbsp;None&nbsp;if&nbsp;not&nbsp;found.<br>
+Exceptions:&nbsp;N/A</tt></dd></dl>
+
+<dl><dt><a name="GroupData-prepare_search"><strong>prepare_search</strong></a>(self, dict_)</dt><dd><tt>Purpose:&nbsp;Loads&nbsp;dictionaries&nbsp;to&nbsp;support&nbsp;lookup&nbsp;of&nbsp;specified&nbsp;values.<br>
+Input&nbsp;Parameters:&nbsp;dict_,&nbsp;dictionary&nbsp;of&nbsp;values&nbsp;to&nbsp;iterate&nbsp;and&nbsp;load.<br>
+Return:&nbsp;N/A.<br>
+Exceptions:&nbsp;N/A.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="pwdsvc.data.html#BaseDataType">BaseDataType</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="PasswordData">class <strong>PasswordData</strong></a>(<a href="pwdsvc.data.html#BaseDataType">BaseDataType</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>This&nbsp;class&nbsp;implements&nbsp;the&nbsp;structure&nbsp;and&nbsp;functionality<br>
+related&nbsp;to&nbsp;data&nbsp;loaded&nbsp;from&nbsp;passwd&nbsp;file.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="pwdsvc.data.html#PasswordData">PasswordData</a></dd>
+<dd><a href="pwdsvc.data.html#BaseDataType">BaseDataType</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="PasswordData-__init__"><strong>__init__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="PasswordData-load_from_list"><strong>load_from_list</strong></a>(self, list_)</dt><dd><tt>Purpose:&nbsp;Load&nbsp;fields&nbsp;from&nbsp;list&nbsp;of&nbsp;values&nbsp;passed&nbsp;in.<br>
+Input&nbsp;Parameters:&nbsp;list_,&nbsp;list&nbsp;of&nbsp;values&nbsp;in&nbsp;order&nbsp;saved&nbsp;in&nbsp;passwd&nbsp;file.<br>
+Return:&nbsp;N/A.<br>
+Exceptions:&nbsp;N/A.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="pwdsvc.data.html#BaseDataType">BaseDataType</a>:<br>
+<dl><dt><a name="PasswordData-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><tt>Purpose:&nbsp;Return&nbsp;json&nbsp;representation&nbsp;of&nbsp;fields&nbsp;as&nbsp;string.<br>
+Input&nbsp;Parameters:&nbsp;N/A<br>
+Return:&nbsp;json&nbsp;encoded&nbsp;value&nbsp;of&nbsp;_fields&nbsp;as&nbsp;a&nbsp;string.<br>
+Exceptions:&nbsp;N/A</tt></dd></dl>
+
+<dl><dt><a name="PasswordData-compare_fields"><strong>compare_fields</strong></a>(self, fields)</dt><dd><tt>Purpose:&nbsp;Compare&nbsp;the&nbsp;_fields&nbsp;in&nbsp;this&nbsp;instance&nbsp;to&nbsp;fields&nbsp;passed&nbsp;in.<br>
+Input&nbsp;Parameters:&nbsp;fields,&nbsp;dictionary&nbsp;of&nbsp;values&nbsp;to&nbsp;compare&nbsp;against.<br>
+Return:&nbsp;True&nbsp;if&nbsp;all&nbsp;fields&nbsp;match.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;True&nbsp;if&nbsp;field&nbsp;name&nbsp;is&nbsp;members&nbsp;and&nbsp;all&nbsp;fields<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;input&nbsp;parameter&nbsp;are&nbsp;subset&nbsp;of&nbsp;_fields[members].<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other&nbsp;wise&nbsp;False.<br>
+Exceptions:&nbsp;<a href="#QueryError">QueryError</a>&nbsp;if&nbsp;unsupported&nbsp;fields&nbsp;are&nbsp;specified.</tt></dd></dl>
+
+<dl><dt><a name="PasswordData-get_field"><strong>get_field</strong></a>(self, key)</dt><dd><tt>Purpose:&nbsp;Search&nbsp;for&nbsp;field&nbsp;by&nbsp;key&nbsp;and&nbsp;return&nbsp;string&nbsp;value.<br>
+Input&nbsp;Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;key&nbsp;-&nbsp;name&nbsp;of&nbsp;field&nbsp;to&nbsp;search.<br>
+Return:&nbsp;Falue&nbsp;of&nbsp;specified&nbsp;field,&nbsp;None&nbsp;if&nbsp;not&nbsp;found.<br>
+Exceptions:&nbsp;N/A</tt></dd></dl>
+
+<dl><dt><a name="PasswordData-prepare_search"><strong>prepare_search</strong></a>(self, dict_)</dt><dd><tt>Purpose:&nbsp;Loads&nbsp;dictionaries&nbsp;to&nbsp;support&nbsp;lookup&nbsp;of&nbsp;specified&nbsp;values.<br>
+Input&nbsp;Parameters:&nbsp;dict_,&nbsp;dictionary&nbsp;of&nbsp;values&nbsp;to&nbsp;iterate&nbsp;and&nbsp;load.<br>
+Return:&nbsp;N/A.<br>
+Exceptions:&nbsp;N/A.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="pwdsvc.data.html#BaseDataType">BaseDataType</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="PathError">class <strong>PathError</strong></a>(<a href="exceptions.html#RuntimeError">exceptions.RuntimeError</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>This&nbsp;class&nbsp;when&nbsp;raised&nbsp;conveys&nbsp;that&nbsp;an&nbsp;exceptional<br>
+situation&nbsp;occurred&nbsp;while&nbsp;trying&nbsp;load&nbsp;the&nbsp;passwd<br>
+or&nbsp;group&nbsp;files&nbsp;respectively;&nbsp;i.e.&nbsp;bad&nbsp;path&nbsp;to&nbsp;file.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="pwdsvc.data.html#PathError">PathError</a></dd>
+<dd><a href="exceptions.html#RuntimeError">exceptions.RuntimeError</a></dd>
+<dd><a href="exceptions.html#StandardError">exceptions.StandardError</a></dd>
+<dd><a href="exceptions.html#Exception">exceptions.Exception</a></dd>
+<dd><a href="exceptions.html#BaseException">exceptions.BaseException</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="exceptions.html#RuntimeError">exceptions.RuntimeError</a>:<br>
+<dl><dt><a name="PathError-__init__"><strong>__init__</strong></a>(...)</dt><dd><tt>x.<a href="#PathError-__init__">__init__</a>(...)&nbsp;initializes&nbsp;x;&nbsp;see&nbsp;help(type(x))&nbsp;for&nbsp;signature</tt></dd></dl>
+
+<hr>
+Data and other attributes inherited from <a href="exceptions.html#RuntimeError">exceptions.RuntimeError</a>:<br>
+<dl><dt><strong>__new__</strong> = &lt;built-in method __new__ of type object&gt;<dd><tt>T.<a href="#PathError-__new__">__new__</a>(S,&nbsp;...)&nbsp;-&gt;&nbsp;a&nbsp;new&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;with&nbsp;type&nbsp;S,&nbsp;a&nbsp;subtype&nbsp;of&nbsp;T</tt></dl>
+
+<hr>
+Methods inherited from <a href="exceptions.html#BaseException">exceptions.BaseException</a>:<br>
+<dl><dt><a name="PathError-__delattr__"><strong>__delattr__</strong></a>(...)</dt><dd><tt>x.<a href="#PathError-__delattr__">__delattr__</a>('name')&nbsp;&lt;==&gt;&nbsp;del&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="PathError-__getattribute__"><strong>__getattribute__</strong></a>(...)</dt><dd><tt>x.<a href="#PathError-__getattribute__">__getattribute__</a>('name')&nbsp;&lt;==&gt;&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="PathError-__getitem__"><strong>__getitem__</strong></a>(...)</dt><dd><tt>x.<a href="#PathError-__getitem__">__getitem__</a>(y)&nbsp;&lt;==&gt;&nbsp;x[y]</tt></dd></dl>
+
+<dl><dt><a name="PathError-__getslice__"><strong>__getslice__</strong></a>(...)</dt><dd><tt>x.<a href="#PathError-__getslice__">__getslice__</a>(i,&nbsp;j)&nbsp;&lt;==&gt;&nbsp;x[i:j]<br>
+&nbsp;<br>
+Use&nbsp;of&nbsp;negative&nbsp;indices&nbsp;is&nbsp;not&nbsp;supported.</tt></dd></dl>
+
+<dl><dt><a name="PathError-__reduce__"><strong>__reduce__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="PathError-__repr__"><strong>__repr__</strong></a>(...)</dt><dd><tt>x.<a href="#PathError-__repr__">__repr__</a>()&nbsp;&lt;==&gt;&nbsp;repr(x)</tt></dd></dl>
+
+<dl><dt><a name="PathError-__setattr__"><strong>__setattr__</strong></a>(...)</dt><dd><tt>x.<a href="#PathError-__setattr__">__setattr__</a>('name',&nbsp;value)&nbsp;&lt;==&gt;&nbsp;x.name&nbsp;=&nbsp;value</tt></dd></dl>
+
+<dl><dt><a name="PathError-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="PathError-__str__"><strong>__str__</strong></a>(...)</dt><dd><tt>x.<a href="#PathError-__str__">__str__</a>()&nbsp;&lt;==&gt;&nbsp;str(x)</tt></dd></dl>
+
+<dl><dt><a name="PathError-__unicode__"><strong>__unicode__</strong></a>(...)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="exceptions.html#BaseException">exceptions.BaseException</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+<dl><dt><strong>message</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="QueryError">class <strong>QueryError</strong></a>(<a href="exceptions.html#RuntimeError">exceptions.RuntimeError</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>This&nbsp;class&nbsp;when&nbsp;raised&nbsp;provides&nbsp;conveys&nbsp;that&nbsp;an&nbsp;exceptional<br>
+situation&nbsp;occurred&nbsp;while&nbsp;trying&nbsp;to&nbsp;process&nbsp;a&nbsp;query.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="pwdsvc.data.html#QueryError">QueryError</a></dd>
+<dd><a href="exceptions.html#RuntimeError">exceptions.RuntimeError</a></dd>
+<dd><a href="exceptions.html#StandardError">exceptions.StandardError</a></dd>
+<dd><a href="exceptions.html#Exception">exceptions.Exception</a></dd>
+<dd><a href="exceptions.html#BaseException">exceptions.BaseException</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="exceptions.html#RuntimeError">exceptions.RuntimeError</a>:<br>
+<dl><dt><a name="QueryError-__init__"><strong>__init__</strong></a>(...)</dt><dd><tt>x.<a href="#QueryError-__init__">__init__</a>(...)&nbsp;initializes&nbsp;x;&nbsp;see&nbsp;help(type(x))&nbsp;for&nbsp;signature</tt></dd></dl>
+
+<hr>
+Data and other attributes inherited from <a href="exceptions.html#RuntimeError">exceptions.RuntimeError</a>:<br>
+<dl><dt><strong>__new__</strong> = &lt;built-in method __new__ of type object&gt;<dd><tt>T.<a href="#QueryError-__new__">__new__</a>(S,&nbsp;...)&nbsp;-&gt;&nbsp;a&nbsp;new&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;with&nbsp;type&nbsp;S,&nbsp;a&nbsp;subtype&nbsp;of&nbsp;T</tt></dl>
+
+<hr>
+Methods inherited from <a href="exceptions.html#BaseException">exceptions.BaseException</a>:<br>
+<dl><dt><a name="QueryError-__delattr__"><strong>__delattr__</strong></a>(...)</dt><dd><tt>x.<a href="#QueryError-__delattr__">__delattr__</a>('name')&nbsp;&lt;==&gt;&nbsp;del&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="QueryError-__getattribute__"><strong>__getattribute__</strong></a>(...)</dt><dd><tt>x.<a href="#QueryError-__getattribute__">__getattribute__</a>('name')&nbsp;&lt;==&gt;&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="QueryError-__getitem__"><strong>__getitem__</strong></a>(...)</dt><dd><tt>x.<a href="#QueryError-__getitem__">__getitem__</a>(y)&nbsp;&lt;==&gt;&nbsp;x[y]</tt></dd></dl>
+
+<dl><dt><a name="QueryError-__getslice__"><strong>__getslice__</strong></a>(...)</dt><dd><tt>x.<a href="#QueryError-__getslice__">__getslice__</a>(i,&nbsp;j)&nbsp;&lt;==&gt;&nbsp;x[i:j]<br>
+&nbsp;<br>
+Use&nbsp;of&nbsp;negative&nbsp;indices&nbsp;is&nbsp;not&nbsp;supported.</tt></dd></dl>
+
+<dl><dt><a name="QueryError-__reduce__"><strong>__reduce__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="QueryError-__repr__"><strong>__repr__</strong></a>(...)</dt><dd><tt>x.<a href="#QueryError-__repr__">__repr__</a>()&nbsp;&lt;==&gt;&nbsp;repr(x)</tt></dd></dl>
+
+<dl><dt><a name="QueryError-__setattr__"><strong>__setattr__</strong></a>(...)</dt><dd><tt>x.<a href="#QueryError-__setattr__">__setattr__</a>('name',&nbsp;value)&nbsp;&lt;==&gt;&nbsp;x.name&nbsp;=&nbsp;value</tt></dd></dl>
+
+<dl><dt><a name="QueryError-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="QueryError-__str__"><strong>__str__</strong></a>(...)</dt><dd><tt>x.<a href="#QueryError-__str__">__str__</a>()&nbsp;&lt;==&gt;&nbsp;str(x)</tt></dd></dl>
+
+<dl><dt><a name="QueryError-__unicode__"><strong>__unicode__</strong></a>(...)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="exceptions.html#BaseException">exceptions.BaseException</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+<dl><dt><strong>message</strong></dt>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>GRP_TYPENAME</strong> = 'GroupData'<br>
+<strong>PWD_TYPENAME</strong> = 'PasswordData'<br>
+<strong>logger</strong> = &lt;logging.Logger object&gt;<br>
+<strong>settings</strong> = &lt;LazySettings "settings"&gt;</td></tr></table>
+</body></html>

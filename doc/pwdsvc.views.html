@@ -1,0 +1,131 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module pwdsvc.views</title>
+<meta charset="utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="pwdsvc.html"><font color="#ffffff">pwdsvc</font></a>.views</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/amos/Documents/JobSearch/workspace/python/django/PasswordService.20180814_191104/pwdsvc/views.py">/home/amos/Documents/JobSearch/workspace/python/django/PasswordService.20180814_191104/pwdsvc/views.py</a></font></td></tr></table>
+    <p><tt>This&nbsp;module&nbsp;generates&nbsp;responses&nbsp;to&nbsp;HTTP&nbsp;invocations&nbsp;routed&nbsp;to&nbsp;functions&nbsp;here-in.<br>
+See&nbsp;per&nbsp;function&nbsp;documentation&nbsp;for&nbsp;details.</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="logging.html">logging</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-groups"><strong>groups</strong></a>(request)</dt><dd><tt>Purpose:&nbsp;Handle&nbsp;GET&nbsp;/groups;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;a&nbsp;list&nbsp;of&nbsp;all&nbsp;groups&nbsp;on&nbsp;the&nbsp;system,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;defined&nbsp;by&nbsp;/etc/group.<br>
+Input&nbsp;Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;request&nbsp;-&nbsp;HTTP&nbsp;request&nbsp;info&nbsp;passed&nbsp;in&nbsp;from&nbsp;framework.<br>
+Return:&nbsp;HttpResponse&nbsp;with&nbsp;json&nbsp;representation&nbsp;of&nbsp;returned&nbsp;values.<br>
+Exceptions:&nbsp;N/A</tt></dd></dl>
+ <dl><dt><a name="-groups_by_gid"><strong>groups_by_gid</strong></a>(request, gid)</dt><dd><tt>Purpose:&nbsp;Handle&nbsp;GET&nbsp;/groups/&lt;gid&gt;;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;a&nbsp;single&nbsp;group&nbsp;with&nbsp;&lt;gid&gt;.&nbsp;Return&nbsp;404&nbsp;if&nbsp;&lt;gid&gt;&nbsp;is&nbsp;not&nbsp;found.<br>
+Input&nbsp;Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;request&nbsp;-&nbsp;HTTP&nbsp;request&nbsp;info&nbsp;passed&nbsp;in&nbsp;from&nbsp;framework.<br>
+Return:&nbsp;HttpResponse&nbsp;with&nbsp;json&nbsp;representation&nbsp;of&nbsp;returned&nbsp;values.<br>
+Exceptions:&nbsp;N/A</tt></dd></dl>
+ <dl><dt><a name="-groups_query"><strong>groups_query</strong></a>(request)</dt><dd><tt>Purpose:&nbsp;Handle&nbsp;GET<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/groups/query<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[?name=&lt;nq&gt;][&amp;gid=&lt;gq&gt;][&amp;member=&lt;mq1&gt;[&amp;member=&lt;mq2&gt;][&amp;...]]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Return&nbsp;a&nbsp;list&nbsp;of&nbsp;groups&nbsp;matching&nbsp;all&nbsp;of&nbsp;the&nbsp;specified&nbsp;query&nbsp;fields.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;bracket&nbsp;notation&nbsp;indicates&nbsp;that&nbsp;any&nbsp;of&nbsp;the&nbsp;following<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;query&nbsp;parameters&nbsp;may&nbsp;be&nbsp;supplied:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-name<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-gid<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-member&nbsp;(repeated)<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Any&nbsp;group&nbsp;containing&nbsp;all&nbsp;the&nbsp;specified&nbsp;members&nbsp;should&nbsp;be&nbsp;returned,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i.e.&nbsp;when&nbsp;query&nbsp;members&nbsp;are&nbsp;a&nbsp;subset&nbsp;of&nbsp;group&nbsp;members.<br>
+Input&nbsp;Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;request&nbsp;-&nbsp;HTTP&nbsp;request&nbsp;info&nbsp;passed&nbsp;in&nbsp;from&nbsp;framework;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;namely&nbsp;including&nbsp;dictionary&nbsp;of&nbsp;parameters.<br>
+Return:&nbsp;HttpResponse&nbsp;with&nbsp;json&nbsp;representation&nbsp;of&nbsp;returned&nbsp;values.<br>
+Exceptions:&nbsp;N/A</tt></dd></dl>
+ <dl><dt><a name="-search_handler"><strong>search_handler</strong></a>(data_type_name, search_key<font color="#909090">=None</font>, search_value<font color="#909090">=None</font>)</dt><dd><tt>Purpose:&nbsp;Adapt&nbsp;PathError&nbsp;and&nbsp;QueryError&nbsp;to&nbsp;appropriate&nbsp;Django&nbsp;error&nbsp;types.<br>
+Input&nbsp;Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;data_type_name&nbsp;-&nbsp;One&nbsp;of&nbsp;the&nbsp;searchable&nbsp;types&nbsp;'PasswordData'&nbsp;or&nbsp;'GroupData'.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;search_key&nbsp;-&nbsp;Name&nbsp;of&nbsp;searchable&nbsp;field&nbsp;for&nbsp;type&nbsp;specified&nbsp;Optional,&nbsp;default&nbsp;=&nbsp;None.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;search_value&nbsp;-&nbsp;Value&nbsp;of&nbsp;defined&nbsp;field&nbsp;to&nbsp;match&nbsp;from&nbsp;data,&nbsp;default&nbsp;=&nbsp;None.<br>
+Return:&nbsp;HttpResponse&nbsp;with&nbsp;json&nbsp;representation&nbsp;of&nbsp;returned&nbsp;values.<br>
+Exceptions:&nbsp;Http404&nbsp;on&nbsp;QueryError,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ImproperlyConfigured&nbsp;on&nbsp;PathError</tt></dd></dl>
+ <dl><dt><a name="-search_results_handler"><strong>search_results_handler</strong></a>(result_list)</dt><dd><tt>Purpose:&nbsp;Raise&nbsp;Http404&nbsp;if&nbsp;results&nbsp;are&nbsp;empty.<br>
+Input&nbsp;Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;result_list&nbsp;-&nbsp;list&nbsp;of&nbsp;search&nbsp;reults&nbsp;to&nbsp;scan&nbsp;for&nbsp;content.<br>
+Return:&nbsp;HttpResponse<br>
+Exceptions:&nbsp;Http404&nbsp;on&nbsp;empty&nbsp;results.</tt></dd></dl>
+ <dl><dt><a name="-search_with_params_handler"><strong>search_with_params_handler</strong></a>(data_type_name, dict_)</dt><dd><tt>Purpose:&nbsp;Adapt&nbsp;PathError&nbsp;and&nbsp;QueryError&nbsp;to&nbsp;appropriate&nbsp;Django&nbsp;error&nbsp;types.<br>
+Input&nbsp;Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;data_type_name&nbsp;-&nbsp;One&nbsp;of&nbsp;the&nbsp;searchable&nbsp;types&nbsp;'PasswordData'&nbsp;or&nbsp;'GroupData'.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dict_&nbsp;-&nbsp;dictionary&nbsp;of&nbsp;parameters&nbsp;passed&nbsp;in&nbsp;to&nbsp;act&nbsp;as&nbsp;search&nbsp;keys.<br>
+Return:&nbsp;HttpResponse&nbsp;with&nbsp;json&nbsp;representation&nbsp;of&nbsp;returned&nbsp;values.<br>
+Exceptions:&nbsp;Http404&nbsp;on&nbsp;QueryError,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ImproperlyConfigured&nbsp;on&nbsp;PathError</tt></dd></dl>
+ <dl><dt><a name="-unique_result_expected_handler"><strong>unique_result_expected_handler</strong></a>(result_list)</dt><dd><tt>Purpose:&nbsp;Prune&nbsp;result&nbsp;from&nbsp;list&nbsp;to&nbsp;dictionary&nbsp;and&nbsp;detect&nbsp;multiple&nbsp;results<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;when&nbsp;unique&nbsp;result&nbsp;expected.<br>
+Input&nbsp;Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;result_list&nbsp;-&nbsp;list&nbsp;of&nbsp;result&nbsp;values&nbsp;to&nbsp;evaluate.<br>
+Return:&nbsp;HttpResponse&nbsp;with&nbsp;json&nbsp;representation&nbsp;of&nbsp;returned&nbsp;values.<br>
+Exceptions:&nbsp;Http404&nbsp;on&nbsp;QueryError,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ImproperlyConfigured&nbsp;on&nbsp;PathError</tt></dd></dl>
+ <dl><dt><a name="-users"><strong>users</strong></a>(request)</dt><dd><tt>Purpose:&nbsp;Handle&nbsp;GET&nbsp;/users;&nbsp;return&nbsp;a&nbsp;list&nbsp;of&nbsp;all&nbsp;users&nbsp;on&nbsp;the&nbsp;system,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as&nbsp;defined&nbsp;in&nbsp;the&nbsp;/etc/passwd&nbsp;file.<br>
+Input&nbsp;Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;request&nbsp;-&nbsp;HTTP&nbsp;request&nbsp;info&nbsp;passed&nbsp;in&nbsp;from&nbsp;framework.<br>
+Return:&nbsp;HttpResponse&nbsp;with&nbsp;json&nbsp;representation&nbsp;of&nbsp;returned&nbsp;values.<br>
+Exceptions:&nbsp;N/A</tt></dd></dl>
+ <dl><dt><a name="-users_by_uid"><strong>users_by_uid</strong></a>(request, uid)</dt><dd><tt>Purpose:&nbsp;Handle&nbsp;GET&nbsp;/users/&lt;uid&gt;,&nbsp;return&nbsp;a&nbsp;single&nbsp;user&nbsp;with&nbsp;&lt;uid&gt;.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Return&nbsp;404&nbsp;if&nbsp;&lt;uid&gt;&nbsp;is&nbsp;not&nbsp;found.<br>
+Input&nbsp;Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;request&nbsp;-&nbsp;HTTP&nbsp;request&nbsp;info&nbsp;passed&nbsp;in&nbsp;from&nbsp;framework.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;-&nbsp;string&nbsp;representation&nbsp;of&nbsp;uid&nbsp;value.<br>
+Return:&nbsp;HttpResponse&nbsp;with&nbsp;json&nbsp;representation&nbsp;of&nbsp;returned&nbsp;values.<br>
+Exceptions:&nbsp;N/A</tt></dd></dl>
+ <dl><dt><a name="-users_query"><strong>users_query</strong></a>(request)</dt><dd><tt>Purpose:&nbsp;Handle&nbsp;GET<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/users/query[?name=&lt;nq&gt;][&amp;uid=&lt;uq&gt;][&amp;gid=&lt;gq&gt;][&amp;comment=&lt;cq&gt;][&amp;home=&lt;hq&gt;][&amp;shell=&lt;sq&gt;]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Return&nbsp;a&nbsp;list&nbsp;of&nbsp;users&nbsp;matching&nbsp;all&nbsp;of&nbsp;the&nbsp;specified&nbsp;query&nbsp;fields.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;bracket&nbsp;notation&nbsp;indicates&nbsp;that&nbsp;any&nbsp;of&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;following&nbsp;query&nbsp;parameters&nbsp;may&nbsp;be&nbsp;supplied:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-name<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-uid<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-gid<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-comment<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-home<br>
+Input&nbsp;Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;request&nbsp;-&nbsp;HTTP&nbsp;request&nbsp;info&nbsp;passed&nbsp;in&nbsp;from&nbsp;framework;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;namely&nbsp;including&nbsp;dictionary&nbsp;of&nbsp;parameters.<br>
+Return:&nbsp;HttpResponse&nbsp;with&nbsp;json&nbsp;representation&nbsp;of&nbsp;returned&nbsp;values.<br>
+Exceptions:&nbsp;N/A</tt></dd></dl>
+ <dl><dt><a name="-users_uid_groups"><strong>users_uid_groups</strong></a>(request, uid)</dt><dd><tt>Purpose:&nbsp;Handle&nbsp;GET&nbsp;/users/&lt;uid&gt;/groups;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;all&nbsp;the&nbsp;groups&nbsp;for&nbsp;a&nbsp;given&nbsp;user.<br>
+Input&nbsp;Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;request&nbsp;-&nbsp;HTTP&nbsp;request&nbsp;info&nbsp;passed&nbsp;in&nbsp;from&nbsp;framework.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;uid&nbsp;-&nbsp;string&nbsp;representation&nbsp;of&nbsp;uid&nbsp;value.<br>
+Return:&nbsp;HttpResponse&nbsp;with&nbsp;json&nbsp;representation&nbsp;of&nbsp;returned&nbsp;values.<br>
+Exceptions:&nbsp;N/A</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>DATAMGR</strong> = &lt;pwdsvc.data.DataManager object&gt;<br>
+<strong>logger</strong> = &lt;logging.Logger object&gt;</td></tr></table>
+</body></html>
