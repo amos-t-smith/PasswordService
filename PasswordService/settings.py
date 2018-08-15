@@ -122,12 +122,12 @@ STATIC_URL = '/static/'
 
 # SITE CUSTOM SETTINGS
 
-#PWDSVC_PASSWORD_FILE_PATH = '/etc/passwd'
-#PWDSVC_GROUP_FILE_PATH = '/etc/group'
+PWDSVC_PASSWORD_FILE_PATH = '/etc/passwd'
+PWDSVC_GROUP_FILE_PATH = '/etc/group'
 
-TEST_TMP_DIR = '/tmp/pwdsvc'
-PWDSVC_PASSWORD_FILE_PATH = os.path.join(TEST_TMP_DIR, 'passwd')
-PWDSVC_GROUP_FILE_PATH = os.path.join(TEST_TMP_DIR, 'group')
+#TEST_TMP_DIR = '/tmp/pwdsvc'
+#PWDSVC_PASSWORD_FILE_PATH = os.path.join(TEST_TMP_DIR, 'passwd')
+#PWDSVC_GROUP_FILE_PATH = os.path.join(TEST_TMP_DIR, 'group')
 
 LOGGING_CONFIG = None
 LOGLEVEL = DEBUG
