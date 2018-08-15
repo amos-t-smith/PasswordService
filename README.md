@@ -11,4 +11,4 @@ Configuration settings are maintained in standard django format in PasswordServi
 Of particular interest in this file are the settings to configure the paths of the passwd and group files: PWDSVC_PASSWORD_FILE_PATH and PWDSVC_GROUP_FILE_PATH respectively.  
 These paths default to the standard /etc/passwd and /etc/group.
 
-To run the unit tests issues; from the root folder of this project issue the command 'python manage.py test'.
+To run the unit tests, from the root folder of this project issue the command 'python manage.py test'.
