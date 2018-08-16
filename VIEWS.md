@@ -1,15 +1,16 @@
-#NAME
+# NAME
     views
 
-#FILE
+# FILE
     PasswordService/pwdsvc/views.py
 
-#DESCRIPTION
+# DESCRIPTION
     This module generates responses to HTTP invocations routed to functions here-in.
     See per function documentation for details.
 
-#FUNCTIONS
-    groups(request)
+# FUNCTIONS
+
+   **groups(request)**
         Purpose: Handle GET /groups;
                  return a list of all groups on the system,
                  a defined by /etc/group.
@@ -18,7 +19,7 @@
         Return: HttpResponse with json representation of returned values.
         Exceptions: N/A
     
-    groups_by_gid(request, gid)
+   **groups_by_gid(request, gid)**
         Purpose: Handle GET /groups/<gid>;
                  return a single group with <gid>. Return 404 if <gid> is not found.
         Input Parameters:
@@ -26,7 +27,7 @@
         Return: HttpResponse with json representation of returned values.
         Exceptions: N/A
     
-    groups_query(request)
+   **groups_query(request)**
         Purpose: Handle GET
                         /groups/query
                         [?name=<nq>][&gid=<gq>][&member=<mq1>[&member=<mq2>][&...]]
@@ -45,7 +46,7 @@
         Return: HttpResponse with json representation of returned values.
         Exceptions: N/A
     
-    search_handler(data_type_name, search_key=None, search_value=None)
+  **search_handler(data_type_name, search_key=None, search_value=None)**
         Purpose: Adapt PathError and QueryError to appropriate Django error types.
         Input Parameters:
             data_type_name - One of the searchable types 'PasswordData' or 'GroupData'.
@@ -55,14 +56,14 @@
         Exceptions: Http404 on QueryError,
                     ImproperlyConfigured on PathError
     
-    search_results_handler(result_list)
+  **search_results_handler(result_list)**
         Purpose: Raise Http404 if results are empty.
         Input Parameters:
             result_list - list of search reults to scan for content.
         Return: HttpResponse
         Exceptions: Http404 on empty results.
     
-    search_with_params_handler(data_type_name, dict_)
+  **search_with_params_handler(data_type_name, dict_)**
         Purpose: Adapt PathError and QueryError to appropriate Django error types.
         Input Parameters:
             data_type_name - One of the searchable types 'PasswordData' or 'GroupData'.
@@ -71,7 +72,7 @@
         Exceptions: Http404 on QueryError,
                     ImproperlyConfigured on PathError
     
-    unique_result_expected_handler(result_list)
+  **unique_result_expected_handler(result_list)**
         Purpose: Prune result from list to dictionary and detect multiple results
                 when unique result expected.
         Input Parameters:
@@ -80,7 +81,7 @@
         Exceptions: Http404 on QueryError,
                     ImproperlyConfigured on PathError
     
-    users(request)
+  **users(request)**
         Purpose: Handle GET /users; return a list of all users on the system,
                  as defined in the /etc/passwd file.
         Input Parameters:
@@ -88,7 +89,7 @@
         Return: HttpResponse with json representation of returned values.
         Exceptions: N/A
     
-    users_by_uid(request, uid)
+  **users_by_uid(request, uid)**
         Purpose: Handle GET /users/<uid>, return a single user with <uid>.
                  Return 404 if <uid> is not found.
         Input Parameters:
@@ -97,7 +98,7 @@
         Return: HttpResponse with json representation of returned values.
         Exceptions: N/A
     
-    users_query(request)
+  **users_query(request)**
         Purpose: Handle GET
                 /users/query[?name=<nq>][&uid=<uq>][&gid=<gq>][&comment=<cq>][&home=<hq>][&shell=<sq>]
                  Return a list of users matching all of the specified query fields.
@@ -114,7 +115,7 @@
         Return: HttpResponse with json representation of returned values.
         Exceptions: N/A
     
-    users_uid_groups(request, uid)
+  **users_uid_groups(request, uid)**
         Purpose: Handle GET /users/<uid>/groups;
                  return all the groups for a given user.
         Input Parameters:
@@ -123,8 +124,8 @@
         Return: HttpResponse with json representation of returned values.
         Exceptions: N/A
 
-#DATA
-    DATAMGR = <pwdsvc.data.DataManager object>
+# DATA
+  **DATAMGR** = <pwdsvc.data.DataManager object>
     logger = <logging.Logger object>
 
 
