@@ -10,7 +10,7 @@ from django.conf import settings
 
 # Test Views
 from django.urls import reverse
-from pwdsvc.data import PWD_TYPENAME, GRP_TYPENAME
+from pwdsvc.data import PWD_TYPENAME, GRP_TYPENAME, DataManager
 
 logger = logging.getLogger(__name__)
 
