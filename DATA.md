@@ -31,22 +31,18 @@
      |  related to data loaded from either passwd or group files.  
      |  
      |  Methods defined here:  
+     |       
+     |  __init__(self, field_names)
      |  
-     
-   **__init__(self, field_names)**   
-   
-     |  
-     
-   **__repr__(self)**      
-   
+     |  __repr__(self)
+     |
      |      Purpose: Return json representation of fields as string.  
      |      Input Parameters: N/A  
      |      Return: json encoded value of _fields as a string.  
      |      Exceptions: N/A  
      |  
-     
-   **compare_fields(self, fields)**  
-   
+     |  compare_fields(self, fields)
+     |
      |      Purpose: Compare the _fields in this instance to fields passed in.
      |      Input Parameters: fields, dictionary of values to compare against.
      |      Return: True if all fields match.
@@ -55,18 +51,17 @@
      |              Other wise False.
      |      Exceptions: QueryError if unsupported fields are specified.
      |  
-     
-   **get_field(self, key)**  
-   
+     |  get_field(self, key)
+     |
      |      Purpose: Search for field by key and return string value.
      |      Input Parameters:
      |          key - name of field to search.
      |      Return: Falue of specified field, None if not found.
      |      Exceptions: N/A
      |  
-     
-   **prepare_search(self, dict_)**  
-   
+     |
+     |   prepare_search(self, dict_)
+     |
      |      Purpose: Loads dictionaries to support lookup of specified values.
      |      Input Parameters: dict_, dictionary of values to iterate and load.
      |      Return: N/A.
@@ -85,12 +80,10 @@
      |  
      |  Methods defined here:
      |  
-   **__init__(self, patterns)**  
-   
+     |  __init__(self, patterns)
      |  
-     
-   **init_callback(self, data_mgr, file_path, data_type)**  
-   
+     |  init_callback(self, data_mgr, file_path, data_type)
+     |
      |      Purpose: Initializes callback so that this class can
      |               reload the data in DataManager.
      |      Input Parameters:
@@ -100,16 +93,15 @@
      |      Return: N/A.
      |      Exceptions: N/A.
      |  
-     
-   **on_modified(self, event)**  
-   
+     |  on_modified(self, event)
+     |
      |      Purpose: Receives notification of file change and calls
      |              on DataManager instance to reload.
      |      Input Parameters:
      |          event - type of filesystem event.
      |      Return: N/A.
      |      Exceptions: N/A.
-    
+     
    **class DataManager(__builtin__.object)**  
 
      |  This class handles loading of passwd and group files and
@@ -117,29 +109,25 @@
      |  
      |  Methods defined here:
      |  
-   **__init__(self)**  
-   
+     |  __init__(self)  
      |  
-     
-   **init_data_type(self, data_type_name)**  
-   
+     |  init_data_type(self, data_type_name)
+     |
      |      Purpose: Initialize dictionaries indexed by datatype to support search.
      |      Input Parameters:
      |          data_type_name - name of data type to use as index.
      |      Return: N/A.
      |      Exceptions: N/A.
      |  
-     
-   **load_data(self)**  
-   
+     |  load_data(self)
+     |
      |      Purpose: Load all types of data and start monitoring files.
      |      Input Parameters: N/A
      |      Return: N/A
      |      Exceptions: N/A.
      |  
-     
-   **load_data_by_type(self, data_type)**  
-   
+     |  load_data_by_type(self, data_type)
+     |
      |      Purpose: Given data type name; start a watchdog observer
      |               to monitor for file changes at configured path.
      |      Input Parameters:
@@ -147,16 +135,16 @@
      |      Return: N/A
      |      Exceptions: N/A.
      |  
-     |  **reload_datatype(self, data_type) **  
+     |  reload_datatype(self, data_type)   
+     |
      |      Purpose: Given data type name; reload source path.
      |      Input Parameters:
      |          data_type - data type to use as index.
      |      Return: N/A
      |      Exceptions: N/A.
-     |  
-     
-   **search(self, data_type_name, search_key=None, search_value=None)**  
-   
+     |       
+     |  search(self, data_type_name, search_key=None, search_value=None)
+     |
      |      Purpose: Given data type name, key, and value;
      |               find a list of matching BaseDataType instances.
      |      Input Parameters:
@@ -166,8 +154,8 @@
      |      Return: list of BaseDataType (or subclassed) instances.
      |      Exceptions: N/A.
      |  
-   **search_with_params(self, data_type_name, dict_)**  
-   
+     |  search_with_params(self, data_type_name, dict_)
+     |
      |      Purpose: Given data type name and dictionary of params
      |               find a list of matching BaseDataType instances.
      |      Input Parameters:
@@ -177,9 +165,8 @@
      |      Return: list of BaseDataType (or subclassed) instances.
      |      Exceptions: N/A.
      |  
-     
-   **start_watchdog(self, data_type)**
-   
+     |  start_watchdog(self, data_type)
+     |
      |      Purpose: Given data type name; start a watchdog observer
      |               to monitor for file changes at configured path.
      |      Input Parameters:
@@ -223,9 +210,7 @@
      |  
      |  __init__(self)
      |  
-     
-   **load_from_list(self, list_)**
-   
+     |  load_from_list(self, list_)**
      |      Purpose: Load fields from list of values passed in.
      |      Input Parameters: list_, list of values in order saved in passwd file.
      |      Return: N/A.
