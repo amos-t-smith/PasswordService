@@ -44,9 +44,9 @@ Available URLs provided from this web-service include the following.
 
   Any group containing all the specified members should be returned,  
 
-*For a more detailed description see the following links for detailed description of functionality.*  
-[VIEWS](VIEWS.md)  
-[DATA](DATA.md)
+__*For a more detailed description see the following links for detailed description of functionality.*__  
+1. [VIEWS](VIEWS.md)  
+2. [DATA](DATA.md)
   
 # Configuration
 Settings are maintained in standard django format in PasswordService/PasswordService/settings.py.
