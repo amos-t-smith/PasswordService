@@ -4,7 +4,7 @@ It will monitor and reload updates to files while running and provide query mech
 
 # Dependencies
 This was developed, tested and depends on django 1.11.  
-Testing was performed using python 2.7.15, and Fedora 27.
+Testing was performed using python 2.7.15 0n Fedora 27.
 
 # How to Run
 To run, cd to the root of this project issue the command 'python manage.py runserver'.
