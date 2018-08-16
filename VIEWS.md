@@ -72,59 +72,64 @@
         Return: HttpResponse  
         Exceptions: Http404 on empty results.  
     
-  **search_with_params_handler(data_type_name, dict_)**
-        Purpose: Adapt PathError and QueryError to appropriate Django error types.
-        Input Parameters:
-            data_type_name - One of the searchable types 'PasswordData' or 'GroupData'.
-            dict_ - dictionary of parameters passed in to act as search keys.
-        Return: HttpResponse with json representation of returned values.
-        Exceptions: Http404 on QueryError,
-                    ImproperlyConfigured on PathError
+  **search_with_params_handler(data_type_name, dict_)**  
+  
+        Purpose: Adapt PathError and QueryError to appropriate Django error types.  
+        Input Parameters:  
+            data_type_name - One of the searchable types 'PasswordData' or 'GroupData'.  
+            dict_ - dictionary of parameters passed in to act as search keys.  
+        Return: HttpResponse with json representation of returned values.  
+        Exceptions: Http404 on QueryError,  
+                    ImproperlyConfigured on PathError  
     
-  **unique_result_expected_handler(result_list)**
-        Purpose: Prune result from list to dictionary and detect multiple results
-                when unique result expected.
-        Input Parameters:
-            result_list - list of result values to evaluate.
-        Return: HttpResponse with json representation of returned values.
-        Exceptions: Http404 on QueryError,
-                    ImproperlyConfigured on PathError
+  **unique_result_expected_handler(result_list)**  
+  
+        Purpose: Prune result from list to dictionary and detect multiple results  
+                when unique result expected.  
+        Input Parameters:  
+            result_list - list of result values to evaluate.  
+        Return: HttpResponse with json representation of returned values.  
+        Exceptions: Http404 on QueryError,  
+                    ImproperlyConfigured on PathError  
     
-  **users(request)**
-        Purpose: Handle GET /users; return a list of all users on the system,
-                 as defined in the /etc/passwd file.
-        Input Parameters:
-            request - HTTP request info passed in from framework.
-        Return: HttpResponse with json representation of returned values.
-        Exceptions: N/A
+  **users(request)**  
+  
+        Purpose: Handle GET /users; return a list of all users on the system,  
+                 as defined in the /etc/passwd file.  
+        Input Parameters:  
+            request - HTTP request info passed in from framework.  
+        Return: HttpResponse with json representation of returned values.  
+        Exceptions: N/A  
     
-  **users_by_uid(request, uid)**
-        Purpose: Handle GET /users/<uid>, return a single user with <uid>.
-                 Return 404 if <uid> is not found.
-        Input Parameters:
-            request - HTTP request info passed in from framework.
-            uid - string representation of uid value.
-        Return: HttpResponse with json representation of returned values.
-        Exceptions: N/A
+  **users_by_uid(request, uid)**  
+  
+        Purpose: Handle GET /users/<uid>, return a single user with <uid>.  
+                 Return 404 if <uid> is not found.  
+        Input Parameters:  
+            request - HTTP request info passed in from framework.  
+            uid - string representation of uid value.  
+        Return: HttpResponse with json representation of returned values.  
+        Exceptions: N/A  
     
   **users_query(request)**
-        Purpose: Handle GET
-                /users/query[?name=<nq>][&uid=<uq>][&gid=<gq>][&comment=<cq>][&home=<hq>][&shell=<sq>]
-                 Return a list of users matching all of the specified query fields.
-                The bracket notation indicates that any of the
-                following query parameters may be supplied:
-                -name
-                -uid
-                -gid
-                -comment
-                -home
-        Input Parameters:
-            request - HTTP request info passed in from framework;
-                    namely including dictionary of parameters.
-        Return: HttpResponse with json representation of returned values.
-        Exceptions: N/A
+  
+        Purpose: Handle GET  
+                /users/query[?name=<nq>][&uid=<uq>][&gid=<gq>][&comment=<cq>][&home=<hq>][&shell=<sq>]  
+                 Return a list of users matching all of the specified query fields.  
+                The bracket notation indicates that any of the  
+                following query parameters may be supplied:  
+                -name  
+                -uid  
+                -gid  
+                -comment  
+                -home  
+        Input Parameters:  
+            request - HTTP request info passed in from framework;  
+                    namely including dictionary of parameters.  
+        Return: HttpResponse with json representation of returned values.  
+        Exceptions: N/A  
     
-  **users_uid_groups(request, uid)**
+  **users_uid_groups(request, uid)**  
   
         Purpose: Handle GET /users/<uid>/groups;  
                  return all the groups for a given user.  
