@@ -44,7 +44,7 @@ Available URLs provided from this web-service include the following.
 
   Any group containing all the specified members should be returned,  
 
-__*For a more detailed description see the following links for detailed description of functionality.*__  
+__*Reference the following links for detailed description of functionality implementing these URLs.*__  
 1. [VIEWS](VIEWS.md)  
 2. [DATA](DATA.md)
   
