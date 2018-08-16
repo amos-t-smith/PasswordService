@@ -32,15 +32,21 @@ Available URLs provided from this web-service include the following.
 **/pwdsvc/users/query[?name=&lt;nq>][&amp;uid=&lt;uq&gt;][&amp;gid=&lt;gq&gt;][&amp;comment=&lt;cq&gt;][&amp;home=&lt;q&gt;][&shell=&lt;sq&gt;]**  
 
   The bracket notation indicates that any of the following query parameters may be supplied:  
-    
-    name, uid, gid, comment, home  
+   
+   - name
+   - uid
+   - gid
+   - comment
+   - home  
 
 7. To find particular groups matching a set of criteria:  
 **/pwdsvc/groups/query[?name=&lt;nq&gt;][&gid=&lt;gq&gt;][&member=&lt;mq1&gt;[&member=&lt;mq2&gt;][&...]]**  
   
   The bracket notation indicates that any of the following query parameters may be supplied:
-
-    name, gid, member (repeated).  
+  
+   - name
+   - gid
+   - member (repeated).  
 
   Any group containing all the specified members should be returned,  
 
