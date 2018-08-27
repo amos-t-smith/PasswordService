@@ -1,5 +1,169 @@
 from __future__ import unicode_literals
+import json
+# Get an instance of a logger.
+import logging
+logger = logging.getLogger(__name__)
 
+from collections import OrderedDict
 from django.db import models
 
 # Create your models here.
+class Account(models.Model):
+    name = models.CharField(max_length=32)
+    uid = models.IntegerField(primary_key=True)
+    gid = models.ForeignKey('Group')
+    comment = models.TextField()
+    home = models.TextField()
+    shell = models.TextField()
+
+    def __str__(self):
+        fields = OrderedDict()
+        fields['name'] = self.name
+        fields['uid'] = "%d" % self.uid
+        fields['gid'] = "%d" % self.gid.pk
+        fields['comment'] = self.comment
+        fields['home'] = self.home
+        fields['shell'] = self.shell
+
+        return json.dumps(fields, sort_keys=False)
+
+    def to_dict(self): 
+        fields = OrderedDict()
+        fields['name'] = self.name
+        fields['uid'] = "%d" % self.uid
+        fields['gid'] = "%d" % self.gid.pk
+        fields['comment'] = self.comment
+        fields['home'] = self.home
+        fields['shell'] = self.shell
+        return fields
+
+class Group(models.Model):
+    name = models.CharField(max_length=31)
+    gid = models.IntegerField(primary_key=True)
+    members = models.ManyToManyField(Account)
+
+    def __str__(self):
+        fields = OrderedDict()
+        fields['name'] = self.name
+        fields['gid'] = "%s" % self.gid
+        members_str = ''
+        for m in self.members.all():
+            members_str += '%s,' % (m.name)
+        fields['members'] = members_str
+
+        return json.dumps(fields, sort_keys=False)
+
+    def to_dict(self):
+        fields = OrderedDict()
+        fields['name'] = self.name
+        fields['gid'] = "%s" % self.gid
+
+        members_str = ''
+        for m in self.members.all() :
+            members_str += '%s,' % (m.name)
+
+        fields['members'] = members_str
+
+        return fields
+
+class DataBaseSearch(object):
+    def __init__(self, data_manager):
+        self.data_mgr = data_manager
+
+    def search_with_params(self, data_type_name, dict_):
+        """
+        Purpose: Given data type name and dictionary of params
+                 find a list of matching BaseDataType instances.
+        Input Parameters:
+            data_type_name - name of data type to use as index.
+            dict_ - OrderedDict containing parameters to use as
+                    search criteria.
+        Return: list of BaseDataType (or subclassed) instances.
+        Exceptions: N/A."""
+        ret = []
+
+        if self.data_mgr._item_status[data_type_name] != None:
+            raise self.data_mgr._item_status[data_type_name]
+
+        kwargs = {}
+        for key, value in dict_.iteritems():
+            logger.debug("Key: %s - Value: %s - data_type_name: %s",
+                         key, value, data_type_name)
+
+            data_key = key
+            if key == 'member':
+                data_key = 'members'
+
+            kwargs[data_key]=value
+
+        query_set = None
+        if data_type_name == 'PasswordData':
+            query_set = Account.objects.filter(**kwargs)
+            logging.debug("Query Set: %s" % (query_set))
+        elif data_type_name == 'GroupData':
+            query_set = Group.objects.filter(**kwargs)
+
+        for item in query_set:
+            logging.debug("Query Set Item: %s" % (item))
+            new_data = self.data_mgr.get_class(data_type_name)
+            new_data.from_dict(item.to_dict())
+            ret.append(new_data)
+
+        return ret
+
+    def search(self, data_type_name, search_key=None, search_value=None):
+        """
+        Purpose: Given data type name, key, and value;
+                 find a list of matching BaseDataType instances.
+        Input Parameters:
+            data_type_name - name of data type to use as index.
+            search_key - field name to use as search criteria.
+            search_value - value to use as search criteria for specified key.
+        Return: list of BaseDataType (or subclassed) instances.
+        Exceptions: N/A."""
+        ret = []
+
+        if self.data_mgr._item_status[data_type_name] != None:
+            raise self.data_mgr._item_status[data_type_name]
+
+        logger.debug('Search Key %s', search_key)
+        if search_key != None:
+            logger.debug('Searching type: %s', data_type_name)
+            lookup_dict = self.data_mgr._item_lookup[data_type_name]
+
+            if search_key in lookup_dict:
+                lookup = lookup_dict[search_key]
+
+                kwargs = {}
+                kwargs[search_key]=search_value
+
+                query_set = None                
+                if data_type_name == 'PasswordData':
+                    query_set = Account.objects.filter(**kwargs)
+                elif data_type_name == 'GroupData':
+                    query_set = Group.objects.filter(**kwargs)
+                
+                if query_set:
+                    for item in query_set:
+                        new_data = self.data_mgr.get_class(data_type_name)
+                        new_data.from_dict(item.to_dict())
+                        ret.append(new_data)
+
+            else:
+                error_msg = 'search_key not found: %s' % (search_key)
+                logger.error(error_msg)
+                raise QueryError(error_msg)
+        else:
+            query_set = None
+            if data_type_name == 'PasswordData':
+                query_set = Account.objects.all()
+            elif data_type_name == 'GroupData':
+                query_set = Group.objects.all()
+
+            if query_set:
+                for item in query_set:
+                    new_data = self.data_mgr.get_class(data_type_name)
+                    new_data.from_dict(item.to_dict())
+                    ret.append(new_data)
+
+        return ret

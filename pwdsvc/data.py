@@ -12,6 +12,7 @@ from collections import OrderedDict
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
 from django.conf import settings
+from pwdsvc.models import Account, Group
 
 # Get an instance of a logger.
 logger = logging.getLogger(__name__)
@@ -58,6 +59,9 @@ class BaseDataType(object):
             ret = self._fields[key]
 
         return ret
+
+    def from_dict(self, data_dict):
+        self._fields = data_dict
 
     def __repr__(self):
         """
@@ -169,6 +173,18 @@ class PasswordData(BaseDataType):
         else:
             raise RuntimeError('Invalid User Data: %s' % (list_))
 
+    def to_model(self):
+        account = Account()
+        account.name = self._fields['name']
+        account.uid = int(self._fields['uid'])
+        
+        gid_pk = int(self._fields['gid'])
+        account.gid = Group.objects.get(gid=gid_pk)
+    
+        account.comment = self._fields['comment']
+        account.home = self._fields['home']
+        account.shell = self._fields['shell']
+        return account
 
 class GroupData(BaseDataType):
     """
@@ -193,6 +209,31 @@ class GroupData(BaseDataType):
             self._fields['members'] = list_[3]
         else:
             raise RuntimeError('Invalid Group Data: %s' % (list_))
+
+    def to_model(self):  
+        group = Group()
+        group.name = self._fields['name']
+        group.gid = int(self._fields['gid'])
+        return group
+
+    def load_members(self, data_mgr):
+        gid = self._fields['gid']
+        gid_pk = int(gid)
+        group = Group.objects.get(gid=gid_pk)
+        member_names = self._fields['members'].split(',')
+
+        acct_results = data_mgr.search(PWD_TYPENAME, 'gid', gid)
+        for acct in acct_results:
+            acct_name = acct._fields['name']
+            if acct_name not in member_names:
+                member_names.append(acct_name)
+
+        for member_name in member_names:
+            if len(member_name):
+                acct_name = member_name
+                acct = Account.objects.get(name=acct_name)
+                group.members.add(acct)
+                group.save()
 
 
 class DataFileEventHandler(PatternMatchingEventHandler):
@@ -275,7 +316,17 @@ class DataManager(object):
         self.init_data_type(PWD_TYPENAME)
         self.init_data_type(GRP_TYPENAME)
 
+        self.data_to_model = {}
+        self.data_to_model[PWD_TYPENAME] = 'Account'
+        self.data_to_model[GRP_TYPENAME] = 'Group'
+
         self.load_data()
+
+    def get_class(self, data_type_name):
+        if data_type_name == PWD_TYPENAME:
+            return PasswordData()
+        elif data_type_name == GRP_TYPENAME:
+            return GroupData()
 
     def init_data_type(self, data_type_name):
         """
@@ -402,6 +453,23 @@ class DataManager(object):
                           [0], recursive=False)
         observer.start()
 
+    def load_model_by_type(self, data_type):
+        data_type_name = data_type.__name__
+
+        if data_type_name in self.data_to_model:
+            if data_type_name == 'GroupData':
+                Group.objects.all().delete()
+            elif data_type_name == 'PasswordData':
+                Account.objects.all().delete()
+
+            for item in self._item_list[data_type_name]:
+               new_model_instance = item.to_model()
+               new_model_instance.save()
+    
+    def load_group_refs(self):
+        for item in self._item_list['GroupData']:
+            item.load_members(self)
+
     def load_data_by_type(self, data_type):
         """
         Purpose: Given data type name; start a watchdog observer
@@ -467,6 +535,10 @@ class DataManager(object):
         logger.debug('Start loading data.')
         self.load_data_by_type(PasswordData)
         self.load_data_by_type(GroupData)
+
+        self.load_model_by_type(GroupData)
+        self.load_model_by_type(PasswordData)
+        self.load_group_refs()
 
         self.start_watchdog(PasswordData)
         self.start_watchdog(GroupData)

@@ -4,7 +4,9 @@ import logging
 from django.http import HttpResponse
 from django.http import Http404
 from django.core.exceptions import ImproperlyConfigured
+from django.conf import settings
 from pwdsvc.data import QueryError, PathError, PasswordData, GroupData, DataManager
+from pwdsvc.models import Group, Account, DataBaseSearch
 
 logger = logging.getLogger(__name__)
 
@@ -37,9 +39,13 @@ def search_handler(data_type_name, search_key=None, search_value=None):
                 ImproperlyConfigured on PathError """
 
     result_list = []
-
     try:
-        result_list = DATAMGR.search(data_type_name, search_key, search_value)
+        search_type = settings.PWDSVC_SEARCH
+        if search_type == 'DataBaseSearch':
+            db_search = DataBaseSearch(DATAMGR)
+            result_list = db_search.search(data_type_name, search_key, search_value)
+        else:
+            result_list = DATAMGR.search(data_type_name, search_key, search_value)
     except PathError, path_error:
         raise ImproperlyConfigured(path_error)
     except QueryError, query_error:
@@ -63,7 +69,13 @@ def search_with_params_handler(data_type_name, dict_):
     result_list = []
 
     try:
-        result_list = DATAMGR.search_with_params(data_type_name, dict_)
+        search_type = settings.PWDSVC_SEARCH
+        if search_type == 'DataBaseSearch':
+            db_search = DataBaseSearch(DATAMGR)
+            result_list = db_search.search_with_params(data_type_name, dict_)
+        else:
+            result_list = DATAMGR.search_with_params(data_type_name, dict_)
+
     except PathError, path_error:
         raise ImproperlyConfigured(path_error)
     except QueryError, query_error:

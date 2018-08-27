@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    'pwdsvc.apps.PwdsvcConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -128,6 +129,8 @@ PWDSVC_GROUP_FILE_PATH = '/etc/group'
 #TEST_TMP_DIR = '/tmp/pwdsvc'
 #PWDSVC_PASSWORD_FILE_PATH = os.path.join(TEST_TMP_DIR, 'passwd')
 #PWDSVC_GROUP_FILE_PATH = os.path.join(TEST_TMP_DIR, 'group')
+
+PWDSVC_SEARCH = 'DataBaseSearch'
 
 LOGGING_CONFIG = None
 LOGLEVEL = DEBUG
