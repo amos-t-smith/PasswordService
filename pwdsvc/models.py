@@ -1,14 +1,29 @@
+"""
+This module provides classes to search the contents of
+loaded content via database queries.
+"""
 from __future__ import unicode_literals
 import json
+from collections import OrderedDict
 # Get an instance of a logger.
 import logging
 logger = logging.getLogger(__name__)
 
-from collections import OrderedDict
+from pwdsvc.errors import QueryError, PathError
+
 from django.db import models
 
 # Create your models here.
+
+
 class Account(models.Model):
+    """
+    This class implements the structure and functionality
+    related to data loaded from passwd file.   Because this
+    derives from model.Model it provides the database eqivalent
+    of the data.PasswordData class.
+    """
+
     name = models.CharField(max_length=32)
     uid = models.IntegerField(primary_key=True)
     gid = models.ForeignKey('Group')
@@ -17,6 +32,13 @@ class Account(models.Model):
     shell = models.TextField()
 
     def __str__(self):
+        """
+        Purpose: Return this classes fields in json
+                 string representation.
+        Input N/A
+        Return: string
+        Exceptions: N/A.
+        """
         fields = OrderedDict()
         fields['name'] = self.name
         fields['uid'] = "%d" % self.uid
@@ -27,7 +49,13 @@ class Account(models.Model):
 
         return json.dumps(fields, sort_keys=False)
 
-    def to_dict(self): 
+    def to_dict(self):
+        """
+        Purpose: Return this classes fields in an OrderedDict.
+        Input N/A
+        Return: OrderedDict
+        Exceptions: N/A.
+        """
         fields = OrderedDict()
         fields['name'] = self.name
         fields['uid'] = "%d" % self.uid
@@ -37,36 +65,64 @@ class Account(models.Model):
         fields['shell'] = self.shell
         return fields
 
+
 class Group(models.Model):
+    """
+    This class implements the structure and functionality
+    related to data loaded from group file.   Because this
+    derives from model.Model it provides the database eqivalent
+    of the data.GroupdData class.
+    """
+
     name = models.CharField(max_length=31)
     gid = models.IntegerField(primary_key=True)
     members = models.ManyToManyField(Account)
 
     def __str__(self):
+        """
+        Purpose: Return this classes fields in json
+                 string representation.
+        Input N/A
+        Return: string
+        Exceptions: N/A.
+        """
         fields = OrderedDict()
         fields['name'] = self.name
         fields['gid'] = "%s" % self.gid
         members_str = ''
-        for m in self.members.all():
-            members_str += '%s,' % (m.name)
+        for member in self.members.all():
+            members_str += '%s,' % (member.name)
         fields['members'] = members_str
 
         return json.dumps(fields, sort_keys=False)
 
     def to_dict(self):
+        """
+        Purpose: Return this classes fields in an OrderedDict.
+        Input N/A
+        Return: OrderedDict
+        Exceptions: N/A.
+        """
+
         fields = OrderedDict()
         fields['name'] = self.name
         fields['gid'] = "%s" % self.gid
 
         members_str = ''
-        for m in self.members.all() :
-            members_str += '%s,' % (m.name)
+        for member in self.members.all():
+            members_str += '%s,' % (member.name)
 
         fields['members'] = members_str
 
         return fields
 
+
 class DataBaseSearch(object):
+    """
+    Provides search methods that match data.DataManager but use
+    django database functionalities internall to perform search.
+    """
+
     def __init__(self, data_manager):
         self.data_mgr = data_manager
 
@@ -94,17 +150,15 @@ class DataBaseSearch(object):
             if key == 'member':
                 data_key = 'members'
 
-            kwargs[data_key]=value
+            kwargs[data_key] = value
 
         query_set = None
         if data_type_name == 'PasswordData':
             query_set = Account.objects.filter(**kwargs)
-            logging.debug("Query Set: %s" % (query_set))
         elif data_type_name == 'GroupData':
             query_set = Group.objects.filter(**kwargs)
 
         for item in query_set:
-            logging.debug("Query Set Item: %s" % (item))
             new_data = self.data_mgr.get_class(data_type_name)
             new_data.from_dict(item.to_dict())
             ret.append(new_data)
@@ -132,17 +186,15 @@ class DataBaseSearch(object):
             lookup_dict = self.data_mgr._item_lookup[data_type_name]
 
             if search_key in lookup_dict:
-                lookup = lookup_dict[search_key]
-
                 kwargs = {}
-                kwargs[search_key]=search_value
+                kwargs[search_key] = search_value
 
-                query_set = None                
+                query_set = None
                 if data_type_name == 'PasswordData':
                     query_set = Account.objects.filter(**kwargs)
                 elif data_type_name == 'GroupData':
                     query_set = Group.objects.filter(**kwargs)
-                
+
                 if query_set:
                     for item in query_set:
                         new_data = self.data_mgr.get_class(data_type_name)

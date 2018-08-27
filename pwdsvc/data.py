@@ -8,30 +8,16 @@ import os
 import os.path
 import logging
 import json
+
 from collections import OrderedDict
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
 from django.conf import settings
 from pwdsvc.models import Account, Group
+from pwdsvc.errors import QueryError, PathError
 
 # Get an instance of a logger.
 logger = logging.getLogger(__name__)
-
-class QueryError(RuntimeError):
-    """
-    This class when raised provides conveys that an exceptional
-    situation occurred while trying to process a query.
-    """
-    pass
-
-
-class PathError(RuntimeError):
-    """
-    This class when raised conveys that an exceptional
-    situation occurred while trying load the passwd
-    or group files respectively; i.e. bad path to file.
-    """
-    pass
 
 
 class BaseDataType(object):
@@ -61,6 +47,13 @@ class BaseDataType(object):
         return ret
 
     def from_dict(self, data_dict):
+        """
+        Populates a dictionary from the fields in 
+        instance of sub- class.
+        Input Parameters: data_dict - dicttionary to use to populate fields.
+        Return: N/A
+        Exceptions: N/A        
+        """
         self._fields = data_dict
 
     def __repr__(self):
@@ -177,14 +170,15 @@ class PasswordData(BaseDataType):
         account = Account()
         account.name = self._fields['name']
         account.uid = int(self._fields['uid'])
-        
+
         gid_pk = int(self._fields['gid'])
         account.gid = Group.objects.get(gid=gid_pk)
-    
+
         account.comment = self._fields['comment']
         account.home = self._fields['home']
         account.shell = self._fields['shell']
         return account
+
 
 class GroupData(BaseDataType):
     """
@@ -210,7 +204,7 @@ class GroupData(BaseDataType):
         else:
             raise RuntimeError('Invalid Group Data: %s' % (list_))
 
-    def to_model(self):  
+    def to_model(self):
         group = Group()
         group.name = self._fields['name']
         group.gid = int(self._fields['gid'])
@@ -274,19 +268,21 @@ class DataFileEventHandler(PatternMatchingEventHandler):
         logger.debug("on_modified event received: %s", event)
 
         if event.src_path == self._file_path:
-           logger.debug("Path changed: %s", self._file_path)
+            logger.debug("Path changed: %s", self._file_path)
         else:
-           logger.debug('Not the path being observed.')
-           return
+            logger.debug('Not the path being observed.')
+            return
 
         if self._data_mgr != None:
-            try:                
+            try:
                 self._data_mgr.reload_datatype(self._data_type)
             except RuntimeError, runtime_error:
                 logger.error(runtime_error)
 
+
 PWD_TYPENAME = PasswordData.__name__
 GRP_TYPENAME = GroupData.__name__
+
 
 class DataManager(object):
     """
@@ -323,6 +319,13 @@ class DataManager(object):
         self.load_data()
 
     def get_class(self, data_type_name):
+        """
+        Purpose: Given data type name return
+                 new instance of class.
+        Input Parameters:
+            data_type_name - name of data type to use as index.
+        Return: instance of class specified.
+        Exceptions: N/A."""
         if data_type_name == PWD_TYPENAME:
             return PasswordData()
         elif data_type_name == GRP_TYPENAME:
@@ -454,6 +457,13 @@ class DataManager(object):
         observer.start()
 
     def load_model_by_type(self, data_type):
+        """
+        Purpose: Given data type name; clear and load
+                 the related data type into database.
+        Input Parameters:
+            data_type_name - data type to use as index.
+        Return: N/A
+        Exceptions: N/A."""
         data_type_name = data_type.__name__
 
         if data_type_name in self.data_to_model:
@@ -463,10 +473,14 @@ class DataManager(object):
                 Account.objects.all().delete()
 
             for item in self._item_list[data_type_name]:
-               new_model_instance = item.to_model()
-               new_model_instance.save()
-    
+                new_model_instance = item.to_model()
+                new_model_instance.save()
+
     def load_group_refs(self):
+        """
+        For each GropuData instance load the member
+        cross-references to Account type.
+        """
         for item in self._item_list['GroupData']:
             item.load_members(self)
 
@@ -495,7 +509,7 @@ class DataManager(object):
             # with notice about invalid path value.
             logger.error(runtime_error)
 
-        if len(lines) > 0:
+        if lines:
             item_lookup = self._item_lookup[data_type_name]
 
             for line in lines:
