@@ -25,7 +25,7 @@ class Account(models.Model):
     """
 
     name = models.CharField(max_length=32)
-    uid = models.IntegerField(primary_key=True)
+    uid = models.CharField(primary_key=True, max_length=10)
     gid = models.ForeignKey('Group')
     comment = models.TextField()
     home = models.TextField()
@@ -58,8 +58,8 @@ class Account(models.Model):
         """
         fields = OrderedDict()
         fields['name'] = self.name
-        fields['uid'] = "%d" % self.uid
-        fields['gid'] = "%d" % self.gid.pk
+        fields['uid'] = self.uid
+        fields['gid'] = self.gid.pk
         fields['comment'] = self.comment
         fields['home'] = self.home
         fields['shell'] = self.shell
@@ -75,7 +75,7 @@ class Group(models.Model):
     """
 
     name = models.CharField(max_length=31)
-    gid = models.IntegerField(primary_key=True)
+    gid = models.CharField(primary_key=True, max_length=10)
     members = models.ManyToManyField(Account)
 
     def __str__(self):
@@ -106,7 +106,7 @@ class Group(models.Model):
 
         fields = OrderedDict()
         fields['name'] = self.name
-        fields['gid'] = "%s" % self.gid
+        fields['gid'] = self.gid
 
         members_str = ''
         for member in self.members.all():
@@ -141,6 +141,7 @@ class DataBaseSearch(object):
         if self.data_mgr._item_status[data_type_name] != None:
             raise self.data_mgr._item_status[data_type_name]
 
+        member_list = []
         kwargs = {}
         for key, value in dict_.iteritems():
             logger.debug("Key: %s - Value: %s - data_type_name: %s",
@@ -148,15 +149,30 @@ class DataBaseSearch(object):
 
             data_key = key
             if key == 'member':
-                data_key = 'members'
-
-            kwargs[data_key] = value
+                member_list = dict_.getlist(key)
+            else:
+                kwargs[data_key] = value
 
         query_set = None
-        if data_type_name == 'PasswordData':
-            query_set = Account.objects.filter(**kwargs)
-        elif data_type_name == 'GroupData':
-            query_set = Group.objects.filter(**kwargs)
+
+        if member_list:
+            # query_set = Group.objects.filter(members__name=member_list)
+            query_set = []
+            for member in member_list:
+                query_set_int = Group.objects.filter(members__name=member)
+                if query_set != None:
+                    for item in query_set_int:
+                        if item not in query_set:
+                            query_set.append(item)
+
+            if query_set and kwargs:
+                query_set = query_set_int.filter(**kwargs)
+
+        else:
+            if data_type_name == 'PasswordData':
+                query_set = Account.objects.filter(**kwargs)
+            elif data_type_name == 'GroupData':
+                query_set = Group.objects.filter(**kwargs)
 
         for item in query_set:
             new_data = self.data_mgr.get_class(data_type_name)

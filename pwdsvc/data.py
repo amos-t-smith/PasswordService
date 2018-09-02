@@ -169,9 +169,9 @@ class PasswordData(BaseDataType):
     def to_model(self):
         account = Account()
         account.name = self._fields['name']
-        account.uid = int(self._fields['uid'])
+        account.uid = self._fields['uid']
 
-        gid_pk = int(self._fields['gid'])
+        gid_pk = self._fields['gid']
         account.gid = Group.objects.get(gid=gid_pk)
 
         account.comment = self._fields['comment']
@@ -207,12 +207,12 @@ class GroupData(BaseDataType):
     def to_model(self):
         group = Group()
         group.name = self._fields['name']
-        group.gid = int(self._fields['gid'])
+        group.gid = self._fields['gid']
         return group
 
     def load_members(self, data_mgr):
         gid = self._fields['gid']
-        gid_pk = int(gid)
+        gid_pk = gid
         group = Group.objects.get(gid=gid_pk)
         member_names = self._fields['members'].split(',')
 
@@ -226,6 +226,7 @@ class GroupData(BaseDataType):
             if len(member_name):
                 acct_name = member_name
                 acct = Account.objects.get(name=acct_name)
+                logger.debug('Loading account with name: %s into group with gid: %s.', acct_name, gid)
                 group.members.add(acct)
                 group.save()
 
